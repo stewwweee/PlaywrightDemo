@@ -1,5 +1,5 @@
 const exp = require('constants');
-const PageModel = require('../pagemodel/pageModel');
+const PageModel = require('../pagemodel/PageModel');
 
 class ScenarioModel extends PageModel {
   constructor(page) {
