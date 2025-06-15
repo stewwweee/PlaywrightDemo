@@ -4,6 +4,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 package-lock.json
+/screenshots/
 # Ignore all log files
 *.log
 # Ignore all coverage reports

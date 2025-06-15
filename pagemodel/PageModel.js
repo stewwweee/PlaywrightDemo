@@ -1,5 +1,3 @@
-const { expect } = require('@playwright/test');
-
 class PageModel {
   constructor(page) {
     this.page = page;
@@ -10,16 +8,32 @@ class PageModel {
   waitForPageLoad = () => {
     return this.page.waitForLoadState('domcontentloaded');
   };
-
+scrollToBottom = async () => {
+    await this.page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  }
   takeScreenshot = async (name) => {
     const timestamp = Date.now();
     const screenshotPath = `screenshots/${name}-${timestamp}.png`;
-    await this.page.screenshot({ path: screenshotPath });
+    await this.page.screenshot({ path: screenshotPath ,fullPage: true });
 
     if (this.testinfo) {
       await this.testinfo.attach(name, { path: screenshotPath, contentType: 'image/png' });
     }
   };
+   dragElementByOffset = async(locator, offsetX) => {
+  const box = await locator.boundingBox();
+  if (box) {
+    const startX = box.x + box.width / 2;
+    const startY = box.y + box.height / 2;
+    await this.page.mouse.move(startX, startY);
+    await this.page.mouse.down();
+    await this.page.mouse.move(startX + offsetX, startY, { steps: 200 });
+    await this.page.mouse.up();
+  }
+}
+
 
   click = async (selector) => {
     await this.page.locator(selector).click();
